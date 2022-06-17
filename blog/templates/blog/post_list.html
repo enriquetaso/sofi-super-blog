@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    <div class="d-flex flex-wrap flex-items-start gutter-spacious">
+        {% for post in posts %}
+            <article class="py-4 d-flex flex-column flex-md-row-reverse flex-items-start flex-wrap col-12 col-md-6">
+                <a class="d-block col-12 position-relative rounded-2 mb-4 overflow-hidden tease-thumbnail col-md-3" href="https://github.blog/2022-06-15-git-merge-2022/">
+                    <img srcset="https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=200%2C200 200w,https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=400%2C400 400w,https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=500%2C500 600w" src="https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=200%2C200" alt="Git Merge 2022" class="d-none d-md-block width-full height-auto rounded-2 tease-thumbnail__img cover-image" loading="lazy" decoding="async" width="150" height="150">
+                </a>
+                <div class="post col-12 col-md-9 pr-md-4 tease-text">
+                    <h3 class="h6-mktg mb-2"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h3>
+                    <p class="f4-mktg color-fg-muted">{{ post.text|linebreaksbr|slice:":100" }}</p>
+                    <div class="mt-12px">
+                        <div class="d-flex">
+                            <a class="mr-auto p-2 authors-wrap mr-12px mt-1 f5-mktg text-bold">{{ post.author }}</a>
+                            <time class="p-2 authors-wrap mr-12px mt-1 f5-mktg text-bold">{{ post.published_date }}</time>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+    <div class="thin-border">
+        <div class="d-flex flex-wrap flex-items-start gutter-spacious">
+            {% for post in posts %}
+                <article class="py-4 d-flex flex-column flex-md-row-reverse flex-items-start flex-wrap col-12">
+                    <a class="d-block col-12 position-relative rounded-2 mb-4 overflow-hidden tease-thumbnail col-md-3" href="https://github.blog/2022-06-15-git-merge-2022/">
+                        <img srcset="https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=200%2C200 200w,https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=400%2C400 400w,https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=500%2C500 600w" src="https://github.blog/wp-content/uploads/2022/06/173149771-9945ea28-ddd5-42ec-971d-5d6c57862943.png?resize=200%2C200" alt="Git Merge 2022" class="d-none d-md-block width-full height-auto rounded-2 tease-thumbnail__img cover-image" loading="lazy" decoding="async" width="200" height="200">
+                    </a>
+                    <div class="post col-12 col-md-9 pr-md-4 tease-text">
+                        <h3 class="h6-mktg mb-2"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h3>
+                        <p class="f4-mktg color-fg-muted">{{ post.text|linebreaksbr|slice:":300" }}</p>
+                        <div class="mt-12px">
+                            <div class="d-flex">
+                                <a class="mr-auto p-2 authors-wrap mr-12px mt-1 f5-mktg text-bold">{{ post.author }}</a>
+                                <time class="p-2 authors-wrap mr-12px mt-1 f5-mktg text-bold">{{ post.published_date }}</time>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
