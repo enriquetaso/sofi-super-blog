@@ -1,5 +1,5 @@
 # Personal Blog
-Django :shipit:
+Using Django :shipit:
 
 ![Sample of the app](sample.png)
 
