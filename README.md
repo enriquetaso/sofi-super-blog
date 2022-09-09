@@ -13,12 +13,12 @@ $ docker-compose build
 
 Second, synchronise your database for the first time
 ```
-$ docker-compose run --rm python manage.py migrate
+$ docker-compose run web --rm python manage.py migrate
 ```
 
 Then, create a superuser
 ```
-$ docker-compose run --rm python manage.py createsuperuser
+$ docker-compose run web --rm python manage.py createsuperuser
 ```
 
 Finally, start the web server. 

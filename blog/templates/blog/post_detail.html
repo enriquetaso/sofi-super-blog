@@ -11,6 +11,13 @@
             <h2 class="title h4 pb-2 mb-4 border-bottom border-dark">
                 {{ post.title }}
             </h2>
+            <p class="border-success" style="font-size:10px; margin-bottom: 15px;">
+                {% for tag in post.tags.all %}
+                <a href="{% url 'tag' tag.id %}" class="badge text-decoration-none bg-light.bg-gradient">
+                #{{tag}}
+                </a>
+                {% endfor %}
+            </p>
             <p>{{ post.text|linebreaksbr }}</p>
             <aside class="actions">
                 {% if user.is_authenticated %}

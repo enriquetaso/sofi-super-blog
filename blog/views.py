@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.views import generic
 
 from .forms import PostForm
-from .models import Post
+from .models import Post, Tag
 
 
 class PostListView(generic.ListView):
@@ -70,3 +70,14 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, "blog/post_edit.html", {"form": form})
+
+
+def list_posts_by_tag(request, tag_id):
+
+    tag = get_object_or_404(Tag, id=tag_id)
+
+    posts = Post.objects.filter(tags=tag)
+
+    context = {"tag_name": tag.name, "posts": posts}
+
+    return render(request, "blog/tag_list.html", context)
