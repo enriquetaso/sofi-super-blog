@@ -34,7 +34,7 @@ version = "4.1.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = "*"
 
 [package.dependencies]
 asgiref = ">=3.5.2,<4"
@@ -51,7 +51,7 @@ version = "20.1.0"
 description = "WSGI HTTP Server for UNIX"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = "*"
 
 [package.dependencies]
 setuptools = ">=3.0"
@@ -68,7 +68,7 @@ version = "2.9.3"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = "*"
 
 [[package]]
 name = "setuptools"
@@ -76,7 +76,7 @@ version = "65.3.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = "*"
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
@@ -115,7 +115,7 @@ brotli = ["Brotli"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
+python-versions = "*"
 content-hash = "870b658b32c3086c50d1f246e997595e48955d3d904f1f7ccc3638b740803265"
 
 [metadata.files]
