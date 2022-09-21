@@ -9,4 +9,6 @@ poetry install -vvv
 
 python manage.py collectstatic --no-input
 python manage.py migrate
+
+# Run the next line only once:
 # python manage.py createsuperuser --noinput
