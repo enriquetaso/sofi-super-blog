@@ -52,7 +52,7 @@ I've followed this [outdated guide](https://render.com/docs/deploy-django#update
 ```
  python strip_setuptools.py - && poetry install
 ```
-3. If you're using the free account you will need to define the Django superuser with environment variables. Check to `build.sh` file.
+3. If you're using the free account you will need to define the Django superuser with environment variables `DJANGO_SUPERUSER_PASSWORD`, `DJANGO_SUPERUSER_EMAIL` and `DJANGO_SUPERUSER_USERNAME`. Check to `build.sh` file.
 4. I've also [configured Cloudflare DNS](https://render.com/docs/configure-cloudflare-dns), if you are not familiar with this configuration remember to remove all the `A`.
 
 
