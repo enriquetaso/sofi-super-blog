@@ -19,7 +19,7 @@
                     </a>
                     {% endfor %}
                 </p>
-                <p>{{ post.text|linebreaksbr|slice:":300" }}}</p>
+                {{ post.text|safe|striptags|truncatechars:100 }}
                 <p class="h6 text-uppercase"><a class="link-readmore" href="{% url 'post_detail' pk=post.pk %}">Read More</a></p>
             </div>
         </article>
