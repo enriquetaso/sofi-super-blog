@@ -3,3 +3,4 @@ dj-database-url
 psycopg2-binary
 whitenoise
 gunicorn
+django-ckeditor==6.5.1

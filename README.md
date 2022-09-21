@@ -13,7 +13,7 @@ $ docker-compose build
 
 Second, synchronise your database for the first time
 ```
-$ docker-compose run web --rm python manage.py migrate
+$ docker-compose run --rm web python manage.py migrate
 ```
 
 Then, create a superuser
@@ -59,3 +59,4 @@ I've followed this [outdated guide](https://render.com/docs/deploy-django#update
 ## Reference Links
 - [Quickstart: Compose and Django](https://docs.docker.com/samples/django/)
 - [Classy Django REST Framework](https://www.cdrf.co/)
+- [CKEditor](https://www.codesnail.com/integrating-ckeditor-in-django-admin-and-rendering-html-in-a-template-django-blog-4/)
