@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-Django = "^4.1.1"
+Django = "^4.1.2"
 dj-database-url = "^1.0.0"
 psycopg2-binary = "^2.9.3"
 whitenoise = {extras = ["brotli"], version = "^6.2.0"}
