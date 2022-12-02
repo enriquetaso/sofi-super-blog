@@ -18,7 +18,7 @@ $ docker-compose run --rm web python manage.py migrate
 
 Then, create a superuser
 ```
-$ docker-compose run web --rm python manage.py createsuperuser
+$ docker-compose run --rm web python manage.py createsuperuser
 ```
 
 Finally, start the web server. 
