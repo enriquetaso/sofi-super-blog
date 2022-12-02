@@ -6,3 +6,7 @@ body{
 a:link, a:visited {
     text-decoration: none;
 }
+
+.django-ckeditor-widget{
+    display: inline !important;
+}

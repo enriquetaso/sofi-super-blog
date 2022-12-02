@@ -12,7 +12,9 @@
             </a>
             {% endfor %}
         </p>
-        <p>{{ post.text|safe }}</p>
+        <div class="django-ckeditor-widget">
+            <p>{{ post.text|safe }}</p>
+        </div>
         <p class="h6 text-uppercase"><a class="link-readmore" href="{% url 'post_list' %}">Back</a></p>
     </div>
 </div>
