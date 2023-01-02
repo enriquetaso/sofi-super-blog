@@ -1,3 +1,7 @@
 Django>=3.0,<4.0
 psycopg2>=2.8
 django-ckeditor==6.5.1
+ipython
+pgcli
+whitenoise
+django-extensions

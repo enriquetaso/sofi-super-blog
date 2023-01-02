@@ -39,6 +39,17 @@ $ docker-compose down
 $ docker-compose run --rm python manage.py test
 
 ```
+## Dependencies
+```
+sudo apt install postgresql-client-common
+```
+
+## Backups
+Using cron to backup the db [At 00:00 on Sunday.](https://crontab.guru/once-a-week)
+```
+0 0 * * 0 docker exec -ti db bash -c "export DATABASE_URL=postgres://postgres:pass@localhost:5432/postgres && pg_dump -O -x ${DATABASE_URL} > '/var/lib/postgresql/data/dump-$(date +%F).sql'"
+```
+[Digital Ocean documentation](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804)
 
 ## Reference Links
 - [Quickstart: Compose and Django](https://docs.docker.com/samples/django/)
