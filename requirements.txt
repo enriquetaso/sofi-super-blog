@@ -1,7 +1,8 @@
-Django>=3.0,<4.0
-psycopg2>=2.8
-django-ckeditor==6.5.1
+Django
+psycopg2
+django-ckeditor
 ipython
 pgcli
 whitenoise
 django-extensions
+djangorestframework
