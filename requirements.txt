@@ -6,3 +6,4 @@ pgcli
 whitenoise
 django-extensions
 djangorestframework
+django-environ
