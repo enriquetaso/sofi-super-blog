@@ -1,6 +1,7 @@
 body{
     background-color: #f3eeee;
-    font-family: "Roboto", sans-serif;
+    font-family: "Sofia Sans", "Roboto", sans-serif;
+    font-size: large;
     color: black;
 }
 a:link, a:visited {
@@ -9,4 +10,13 @@ a:link, a:visited {
 
 .django-ckeditor-widget{
     display: inline !important;
+}
+
+.title-font{
+    font-family: 'Monofett', "Roboto", sans-serif;
+    font-size: larger;
+}
+
+.title-head{
+    font-family: 'Modak';
 }
