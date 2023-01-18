@@ -1,24 +1,14 @@
+import environ
 import os
 from pathlib import Path
 
+env = environ.Env(DEBUG=(bool, False))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-%ot#n&@zb(u1-6r86%m()gx%0o)ba4=5to@ohzqe7gmi&zmii4",
-)
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv("DJANGO_DEBUG", False))
-
-ALLOWED_HOSTS = ["*"]
-
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+DEBUG = env('DJANGO_DEBUG')
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -27,11 +17,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog",
-    "finance",
     'ckeditor',
     'django_extensions',
     'rest_framework',
+    "blog",
+    "finance",
 ]
 
 MIDDLEWARE = [
@@ -112,14 +102,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
