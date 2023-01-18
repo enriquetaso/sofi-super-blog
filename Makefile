@@ -24,6 +24,18 @@ migrate:
 start-db:
 	docker compose up -d db && docker compose logs -f db
 
+start-web:
+	docker compose up -d web && docker compose logs -f web
+
 get-dumped:
     # export DATABASE_URL=postgres://postgres:pass@localhost:5432/postgres
 	pg_dump -O -x ${DATABASE_URL} > "dump-$(date +%F).sql"
+
+logs-db:
+	docker compose logs -f db
+
+logs-web:
+	docker compose logs -f web
+
+restart-web:
+	docker compose restart web

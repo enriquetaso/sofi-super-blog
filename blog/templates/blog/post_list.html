@@ -5,14 +5,15 @@
             <div class="panel-heading"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></div>
             <div class="panel-body">
                 <p><small class="text-muted">{{ post.published_date|date }}</small></p>
-                <p class="border-success">
+                <p>
                     {% for tag in post.tags.all %}
-                    <a href="{% url 'tag' tag.id %}" class="badge text-decoration-none bg-light bg-gradient">
-                    #{{tag}}
+                    <a href="{% url 'tag' tag.id %}" class="text-decoration-none text-muted">
+                        <small>#{{tag}}</small>
                     </a>
                     {% endfor %}
-                    <p>{{ post.text|safe|striptags|truncatechars:500 }}</p>
                 </p>
+                <p>{{ post.text|safe|striptags|truncatechars:500 }}</p>
+                <p class="lead text-white font-weight-bold"><a href="{% url 'post_detail' pk=post.pk %}">Continue reading...</a></p>
             </div>
         </div>
     {% endfor %}
