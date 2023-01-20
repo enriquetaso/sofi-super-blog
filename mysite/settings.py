@@ -2,13 +2,14 @@ import environ
 import os
 from pathlib import Path
 
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-DEBUG = env('DJANGO_DEBUG')
+DEBUG = env.bool('DJANGO_DEBUG', default=False)
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['*'])
+CSRF_TRUSTED_ORIGINS=env.list('DJANGO_CSRF_TRUSTED_ORIGINS', default=[])
 
 INSTALLED_APPS = [
     "django.contrib.admin",
