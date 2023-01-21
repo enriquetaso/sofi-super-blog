@@ -3,9 +3,6 @@ build:
 start:
 	docker compose up -d
 
-collecstatic:
-	docker compose run --rm web	python manage.py collectstatic
-
 shell:
 	docker compose run --rm web bash
 
@@ -21,6 +18,9 @@ remove:
 migrate:
 	docker compose run --rm web python manage.py migrate
 
+collecstatic:
+	docker compose run --rm web python manage.py collectstatic --no-input
+
 start-db:
 	docker compose up -d db && docker compose logs -f db
 
@@ -29,6 +29,7 @@ start-web:
 
 get-dumped:
     # export DATABASE_URL=postgres://postgres:pass@localhost:5432/postgres
+	# docker exec -d e6f50fa142aa sh -c "pg_dump -U postgres -O -x postgres > /docker-entrypoint-initdb.d/dump-$(date +%F).sql"
 	pg_dump -O -x ${DATABASE_URL} > "dump-$(date +%F).sql"
 
 logs-db:
