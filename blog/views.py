@@ -11,9 +11,9 @@ from .models import Post, Tag
 
 
 class PostListView(generic.ListView):
+    paginate_by = 3
     model = Post
     template_name = "blog/post_list.html"
-    context_object_name = "posts"
 
     def get_queryset(self):
         """Return published Post ordering desc"""
