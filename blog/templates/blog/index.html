@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+{% load static %}
+<div class="col-lg-6">
+    <div class="text-center"><img src="{% static 'img/unicorn.png' %}" style="width: 100%; height: 100%;" alt="Kawaii Unicorn"/></div>
+
+</div>
+<div class="col-lg-6">
+    
+    <h1 class="title-head">Oops..</h1>
+    <p>This page is still wip but feel free to visit:</p>
+    <p class="title-head"><a href="{% url 'post_list' %}">My Blog</a></p>
+
+</div>
+{% endblock %}

@@ -81,3 +81,11 @@ def list_posts_by_tag(request, tag_id):
     context = {"tag_name": tag.name, "posts": posts}
 
     return render(request, "blog/tag_list.html", context)
+
+
+def index(request):
+    return render(request, "blog/index.html", {})
+
+
+def resume(request):
+    return render(request, "blog/resume.html", {})

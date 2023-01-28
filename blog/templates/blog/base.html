@@ -29,9 +29,9 @@
 
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="nav navbar-nav">
-                        <li class="active nav-item"><a href="/">Home</a></li>
-                        <li class="nav-item"><a href="#">About Me</a></li>
-                        <li class="nav-item"><a href="#">Resume</a></li>
+                        <li class="nav-item"><a href="/">Home</a></li>
+                        <li class="nav-item"><a href="{% url 'resume' %}">Resume</a></li>
+                        <li class="nav-item"><a href="{% url 'post_list' %}">Blog</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a href="#">{% include './icons/file-earmark-plus.svg' %}</a></li>
                         {% endif %}
@@ -39,20 +39,7 @@
                 </div>
             </div>
           </nav> 
-        <div class="container" style="margin-top:70px">
-                <div class="col-lg-10">{% block content %}{% endblock %}</div>
-                <div class="col-lg-2">
-                    <img src="{% static 'img/profile.jpg' %}" class="img-circle img-responsive" alt="Grumpy Cat">
-                    <p><strong>@enriquetaso</strong></p>
-                    <p>🇮🇪 Python developer living and working in Ireland.</p>
-                    <p class="blockquote-footer">🇦🇷 From <i>Buenos Aires</i>.</p>
-                    <p><a href="https://twitter.com/enriquetaso" target="_blank" title="Enriquetaso Twitter Profile"><span class="icon fa fa-twitter"></span></a>
-                        <a href="https://www.linkedin.com/in/enriquetaso/" target="_blank" title="Enriquetaso Linkedin Profile"><span class="icon fa fa-linkedin"></span></a></p>
-                </div>
-        </div>
-        <footer class="py-3 bg-grey">
-            <p class="m-0 text-dark text-center ">&#9749;</p>
-        </footer>
+        <div class="container" style="margin-top:70px">{% block content %}{% endblock %}</div>
     </body>
 </html>
                                                                                                                                                                                                             

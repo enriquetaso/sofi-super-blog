@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tag, Account, Transaction, Category
+from finance.models import Tag, Account, Transaction, Category
 
 admin.site.register(Tag)
 admin.site.register(Account)
