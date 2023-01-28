@@ -40,6 +40,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class TransactionsCVSExportView(View):
+    """Class based view to export transactions to CSV
+
+    Regular Django View is use to it's easier to response a HttpResponse object.
+    """
+
     def get(self, request):
         # Create the HttpResponse object with the appropriate CSV header.
         response = HttpResponse(content_type="text/csv")
