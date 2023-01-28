@@ -51,7 +51,10 @@ Using cron to backup the db [At 00:00 on Sunday.](https://crontab.guru/once-a-we
 ```
 [Digital Ocean documentation](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804)
 
-## Reference Links
+## Github Actions
+[Building and testing Python, continuous integration (CI) workflow to build and test your Python project.](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python)
+
+# Reference Links
 - [Quickstart: Compose and Django](https://docs.docker.com/samples/django/)
 - [Classy Django REST Framework](https://www.cdrf.co/)
 - [CKEditor](https://www.codesnail.com/integrating-ckeditor-in-django-admin-and-rendering-html-in-a-template-django-blog-4/)
