@@ -36,7 +36,7 @@ $ docker-compose down
 ## Run Test
 
 ```
-$ docker-compose run --rm python manage.py test
+$ docker-compose run --rm web python manage.py test
 
 ```
 ## Dependencies

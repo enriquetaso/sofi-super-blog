@@ -3,7 +3,7 @@
 #  This is used by the API views.
 
 from rest_framework import serializers
-from .models import Transaction, Account, Tag, Category
+from finance.models import Transaction, Account, Tag, Category
 
 
 class TagSerializer(serializers.ModelSerializer):

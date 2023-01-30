@@ -40,3 +40,6 @@ logs-web:
 
 restart-web:
 	docker compose restart web
+
+test:
+	docker compose run --rm web python manage.py test
