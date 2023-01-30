@@ -6,8 +6,8 @@ from django.views.generic import View
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .models import Transaction, Account, Tag, Category
-from .serializers import (
+from finance.models import Transaction, Account, Tag, Category
+from finance.serializers import (
     TransactionSerializer,
     AccountSerializer,
     TagSerializer,

@@ -84,7 +84,7 @@ def list_posts_by_tag(request, tag_id):
 
 
 def index(request):
-    return render(request, "blog/index.html", {})
+    return redirect("post_list")
 
 
 def resume(request):
