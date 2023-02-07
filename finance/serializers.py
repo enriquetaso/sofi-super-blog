@@ -18,12 +18,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("id", "name")
 
 
-class AccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = ("id", "name", "balance", "owner")
-
-
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
@@ -37,3 +31,11 @@ class TransactionSerializer(serializers.ModelSerializer):
             "tags",
             "category",
         )
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    transactions = TransactionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Account
+        fields = ("id", "name", "balance", "owner", "transactions")
