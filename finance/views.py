@@ -18,25 +18,21 @@ from finance.serializers import (
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all().order_by("date")
     serializer_class = TransactionSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
 
 
 class TransactionsCVSExportView(View):
