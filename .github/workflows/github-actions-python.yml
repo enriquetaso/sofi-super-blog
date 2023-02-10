@@ -7,13 +7,13 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      DJANGO_SECRET_KEY=django-insecure-%ot#n&@zb
-      DJANGO_DEBUG=True
-      POSTGRES_PASSWORD=postgres
-      POSTGRES_NAME=postgres
-      POSTGRES_USER=postgres
-      DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
-      POSTGRES_TEST_NAME=postgres_test
+      DJANGO_SECRET_KEY: django-insecure-%ot#n&@zb
+      DJANGO_DEBUG: True
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_NAME: postgres
+      POSTGRES_USER: postgres
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      POSTGRES_TEST_NAME: postgres_test
     strategy:
       matrix:
         python-version: ["3.11"]
