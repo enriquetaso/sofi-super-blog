@@ -1,10 +1,9 @@
-name: Python package
+name: Django CI/CD Workflow
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       DJANGO_SECRET_KEY: django-insecure-%ot#n&@zb
@@ -14,6 +13,7 @@ jobs:
       POSTGRES_USER: postgres
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
       POSTGRES_TEST_NAME: postgres_test
+      POSTGRES_HOST: localhost
     strategy:
       matrix:
         python-version: ["3.11"]
@@ -37,4 +37,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test
         run: |
-          python manage.py check --database default
+          python manage.py test
