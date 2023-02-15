@@ -42,4 +42,4 @@ restart-web:
 	docker compose restart web
 
 test:
-	docker compose run --rm web python manage.py test
+	docker compose run --rm web python manage.py test -v 2
