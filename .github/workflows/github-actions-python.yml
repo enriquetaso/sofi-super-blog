@@ -1,23 +1,32 @@
-name: Python package
+name: Django CI/CD Workflow
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     env:
       DJANGO_SECRET_KEY: django-insecure-%ot#n&@zb
       DJANGO_DEBUG: True
       POSTGRES_PASSWORD: postgres
-      POSTGRES_NAME: postgres
+      POSTGRES_NAME: github-actions
       POSTGRES_USER: postgres
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
       POSTGRES_TEST_NAME: postgres_test
+      POSTGRES_HOST: localhost
     strategy:
       matrix:
         python-version: ["3.11"]
-
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_NAME: github-actions
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -37,4 +46,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test
         run: |
-          python manage.py check --database default
+          python manage.py test -v 2
