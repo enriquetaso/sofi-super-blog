@@ -1,5 +1,6 @@
 dumps/
 old_dumps/
+envscript/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
