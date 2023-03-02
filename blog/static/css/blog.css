@@ -1,22 +1,74 @@
 body{
-    background-color: #f3eeee;
-    font-family: "Sofia Sans", "Roboto", sans-serif;
-    font-size: large;
-    color: black;
+    /* background-color: #f3eeee; */
+    font-family: "Roboto", sans-serif, 'Sofia Sans';
+    font-size: larger;
+    text-decoration: none;
+    color: #36454F;
 }
+
 a:link, a:visited {
     text-decoration: none;
+    color: #36454F;
 }
 
 .django-ckeditor-widget{
     display: inline !important;
 }
 
-.title-font{
-    font-family: 'Monofett', "Roboto", sans-serif;
-    font-size: larger;
+.main-title{
+    font-family:"Roboto", sans-serif, 'Sofia Sans';
+    color: #36454F;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -.05em;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-.title-head{
-    font-family: 'Modak';
+.blog-title{
+    color: #36454F;
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -.05em;
+    font-weight: 700;
+}
+
+.article-title{
+    color: black;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -.05em;
+    font-weight: 700;
+}
+
+.article-title a{
+    border-bottom: 1px dotted #000;
+}
+
+.article-title a:hover{
+    border-bottom: 1px solid #000;
+}
+
+.container-text-post{
+    border-top: 1px dotted #000;
+    padding-top: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #36454F;
+}
+
+.container-text-post h1{
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -.05em;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.container-text-post p{
+    margin-bottom: 1.5rem;
+}
+
+.container-text-post a{
+    border-bottom: 1px dotted #000;
 }
