@@ -12,7 +12,7 @@
     <div class="col-lg-8">
         {% for post in page_obj %}
             <article class="p-3 mt-2">
-                <h2 class="article-title mb-3"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                <h2 class="article-title mb-3 text-capitalize"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
                 <p style="font-size: 1.125rem;line-height: 1.75rem;">{{ post.text|safe|striptags|truncatechars:250 }}</p>
                 <footer>                
                     <p class="text-muted">{{ post.published_date|date }}</p>
