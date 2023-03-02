@@ -1,4 +1,5 @@
 import environ
+import mimetypes
 import os
 from pathlib import Path
 
@@ -10,6 +11,9 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["*"])
 CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
+
+# https://stackoverflow.com/a/35557243/4694928
+mimetypes.add_type("text/css", ".css", True)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -121,6 +125,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.BasicAuthentication"
+        "rest_framework.authentication.BasicAuthentication",
     ],
 }
