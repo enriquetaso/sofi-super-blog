@@ -88,4 +88,4 @@ def index(request):
 
 
 def resume(request):
-    return render(request, "blog/resume.html", {})
+    return render(request, "blog/about.html", {})
