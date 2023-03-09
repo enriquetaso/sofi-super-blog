@@ -16,7 +16,7 @@ CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS", default=[])
 mimetypes.add_type("text/css", ".css", True)
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    "mysite.apps.FinanceAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -25,8 +25,8 @@ INSTALLED_APPS = [
     "ckeditor",
     "django_extensions",
     "rest_framework",
-    "blog",
-    "finance",
+    "blog.apps.BlogConfig",
+    "finance.apps.FinanceConfig",
 ]
 
 MIDDLEWARE = [
@@ -45,7 +45,7 @@ ROOT_URLCONF = "mysite.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
