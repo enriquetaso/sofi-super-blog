@@ -17,7 +17,7 @@ from finance.serializers import (
     TagSerializer,
     CategorySerializer,
 )
-from utils.charts import (
+from finance.utils.charts import (
     months,
     colorPrimary,
     colorSuccess,
