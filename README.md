@@ -54,6 +54,11 @@ Using cron to backup the db [At 00:00 on Sunday.](https://crontab.guru/once-a-we
 ## Github Actions
 [Building and testing Python, continuous integration (CI) workflow to build and test your Python project.](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python)
 
+# Contact Me
+- contact at enriquetaso dot com
+- [LinkedIn](https://www.linkedin.com/in/enriquetaso/)
+- [Twitter](https://twitter.com/enriquetaso)
+
 # Reference Links
 - [Quickstart: Compose and Django](https://docs.docker.com/samples/django/)
 - [Classy Django REST Framework](https://www.cdrf.co/)
