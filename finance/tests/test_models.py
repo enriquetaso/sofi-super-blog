@@ -43,7 +43,12 @@ class TransactionTestCase(BaseTestCase):
 
     def test_transaction_str(self):
         """Test Transaction model string representation."""
-        self.assertEqual(str(self.transaction), "test_description")
+        expected_str = (
+            f"{self.transaction.date} - "
+            f"{self.transaction.place} - "
+            f"{self.transaction.description}"
+        )
+        self.assertEqual(str(self.transaction), expected_str)
 
     def test_transaction_tags(self):
         """Test Transaction model tags."""
