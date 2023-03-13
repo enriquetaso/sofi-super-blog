@@ -32,6 +32,11 @@ urlpatterns = [
         name="chart-transactions",
     ),
     path(
+        "chart/transaction-by-categories-per-month/<int:month>/",
+        views.get_transaction_chart_by_category_per_month,
+        name="chart-transaction-by-categories-per-month",
+    ),
+    path(
         "chart/transaction-by-categories/<int:year>/",
         views.get_transaction_chart_by_category,
         name="chart-transaction-categories",

@@ -233,7 +233,7 @@ def get_transaction_chart_by_category(request, year):
 
     return JsonResponse(
         {
-            "title": f"Transactions in {year}",
+            "title": f"Total spent by category {year}",
             "data": {
                 "labels": list(category_dict.keys()),
                 "datasets": [
@@ -248,6 +248,38 @@ def get_transaction_chart_by_category(request, year):
         }
     )
 
+@staff_member_required
+def get_transaction_chart_by_category_per_month(request, month):
+    year = 2023
+    categories = Category.objects.all()
+    category_dict = dict()
+    for category in categories:
+        category_dict[category.name] = (
+            Transaction.objects.filter(category=category)
+            .filter(date__year=year)
+            .filter(date__month=month)
+            .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+
+        )
+    # drop null values or zero values
+    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
+
+    return JsonResponse(
+        {
+            "title": f"Transactions per Category - {month}/{year}",
+            "data": {
+                "labels": list(category_dict.keys()),
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(len(category_dict)),
+                        "borderColor": generate_color_palette(len(category_dict)),
+                        "data": list(category_dict.values()),
+                    }
+                ],
+            },
+        }
+    )
 
 @staff_member_required
 def get_transaction_chart_by_tag(request, year):
@@ -262,7 +294,7 @@ def get_transaction_chart_by_tag(request, year):
 
     return JsonResponse(
         {
-            "title": f"Transactions in {year}",
+            "title": f"Total spent by tag in {year}",
             "data": {
                 "labels": list(tag_dict.keys()),
                 "datasets": [
@@ -291,7 +323,7 @@ def get_transaction_chart_by_account(request, year):
 
     return JsonResponse(
         {
-            "title": f"Transactions in {year}",
+            "title": f"Account Usage in {year}",
             "data": {
                 "labels": list(account_dict.keys()),
                 "datasets": [
