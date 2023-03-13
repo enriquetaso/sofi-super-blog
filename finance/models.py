@@ -48,7 +48,7 @@ class Transaction(models.Model):
     )
 
     def __str__(self):
-        return self.description
+        return f"{self.date} - {self.place} - {self.description}"
 
     # Meta class to order the queryset
     class Meta:

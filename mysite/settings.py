@@ -1,3 +1,7 @@
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
 import environ
 import mimetypes
 import os
@@ -127,4 +131,25 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ],
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "2/day",
+    },
 }
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN", default=""),
+        integrations=[
+            DjangoIntegration(),
+        ],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )
