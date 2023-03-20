@@ -1,65 +1,26 @@
-# Personal Blog
-Using Django :shipit:
-
-![Sample of the app](sample.png)
-
-## Run To Do App
-This project uses `docker` and `docker-compose`.
-
-First, built the image
-```
-$ docker-compose build
-```
-
-Second, synchronise your database for the first time
-```
-$ docker-compose run --rm web python manage.py migrate
-```
-
-Then, create a superuser
-```
-$ docker-compose run --rm web python manage.py createsuperuser
-```
-
-Finally, start the web server. 
-```
-$ docker-compose up
-```
-Now you will see the starting development server at `localhost:8000/`.
-
-To remove all containers run
-```
-$ docker-compose down
-```
+<div align="center">
+<h1>🦄 Blog & Finance </h1>
+<a href="https://github.com/TheAlgorithms/Python/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/enriquetaso/sofi-super-blog/.github/workflows/github-actions-python.yml?style=flat-square" height="20" alt="GitHub Workflow Status">
+  </a>
+  <a href="https://github.com/pre-commit/pre-commit">
+    <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=flat-square" height="20" alt="pre-commit">
+  </a>
+  <a href="https://github.com/psf/black">
+    <img src="https://img.shields.io/static/v1?label=code%20style&message=black&color=black&style=flat-square" height="20" alt="code style: black">
+  </a>
+  <p>Personal project to track spending and blog about tech stuff.</p>
+</div>
 
 
-## Run Test
+## Django website https://www.enriquetaso.com/blog/
 
-```
-$ docker-compose run --rm web python manage.py test
+## Getting Started
 
-```
-## Dependencies
-```
-sudo apt install postgresql-client-common
-```
+Read through the [WIKI](https://github.com/enriquetaso/sofi-super-blog/wiki) to check how to run the project.
 
-## Backups
-Using cron to backup the db [At 00:00 on Sunday.](https://crontab.guru/once-a-week)
-```
-0 0 * * 0 docker exec -ti db bash -c "export DATABASE_URL=postgres://postgres:pass@localhost:5432/postgres && pg_dump -O -x ${DATABASE_URL} > '/var/lib/postgresql/data/dump-$(date +%F).sql'"
-```
-[Digital Ocean documentation](https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804)
 
-## Github Actions
-[Building and testing Python, continuous integration (CI) workflow to build and test your Python project.](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python)
-
-# Contact Me
+## Contact Me
 - contact at enriquetaso dot com
 - [LinkedIn](https://www.linkedin.com/in/enriquetaso/)
 - [Twitter](https://twitter.com/enriquetaso)
-
-# Reference Links
-- [Quickstart: Compose and Django](https://docs.docker.com/samples/django/)
-- [Classy Django REST Framework](https://www.cdrf.co/)
-- [CKEditor](https://www.codesnail.com/integrating-ckeditor-in-django-admin-and-rendering-html-in-a-template-django-blog-4/)
