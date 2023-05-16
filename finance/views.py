@@ -1,30 +1,37 @@
 import csv
-from datetime import date, timedelta
+from datetime import date
+from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count, F, Sum, Avg
-from django.db.models.functions import ExtractYear, ExtractMonth, Coalesce
-from django.http import HttpResponse, JsonResponse
+from django.db.models import Avg
+from django.db.models import Count
+from django.db.models import F
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from django.db.models.functions import ExtractMonth
+from django.db.models.functions import ExtractYear
+from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
 from rest_framework import viewsets
 
-from finance.models import Transaction, Account, Tag, Category
-from finance.serializers import (
-    TransactionSerializer,
-    AccountSerializer,
-    TagSerializer,
-    CategorySerializer,
-)
-from finance.utils.charts import (
-    months,
-    colorPrimary,
-    colorSuccess,
-    colorDanger,
-    generate_color_palette,
-    get_year_dict,
-)
+from finance.models import Account
+from finance.models import Category
+from finance.models import Tag
+from finance.models import Transaction
+from finance.serializers import AccountSerializer
+from finance.serializers import CategorySerializer
+from finance.serializers import TagSerializer
+from finance.serializers import TransactionSerializer
+from finance.utils import charts_func
+from finance.utils.charts import colorDanger
+from finance.utils.charts import colorPrimary
+from finance.utils.charts import colorSuccess
+from finance.utils.charts import generate_color_palette
+from finance.utils.charts import get_year_dict
+from finance.utils.charts import months
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
@@ -84,6 +91,44 @@ class TransactionsCVSExportView(View):
             writer.writerow(transactionrow)
 
         return response
+
+
+@staff_member_required
+def get_transaction_chart_by_category_per_month(request, month):
+    try:
+        month = int(request.GET.get("month"))
+        if month < 1 or month > 12:
+            raise ValueError
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest("Invalid or missing 'month' query parameter.")
+
+    try:
+        year = int(request.GET.get("year", "2023"))
+        if year < 1900 or year > 9999:
+            raise ValueError
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest("Invalid or missing 'year' query parameter.")
+
+    category_dict = charts_func.get_data_category_per_month(
+        month, year, only_basics=False
+    )
+
+    return JsonResponse(
+        {
+            "title": f"Transactions per Category - {month}/{year}",
+            "data": {
+                "labels": list(category_dict.keys()),
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(len(category_dict)),
+                        "borderColor": generate_color_palette(len(category_dict)),
+                        "data": list(category_dict.values()),
+                    }
+                ],
+            },
+        }
+    )
 
 
 @staff_member_required
@@ -248,38 +293,6 @@ def get_transaction_chart_by_category(request, year):
         }
     )
 
-@staff_member_required
-def get_transaction_chart_by_category_per_month(request, month):
-    year = 2023
-    categories = Category.objects.all()
-    category_dict = dict()
-    for category in categories:
-        category_dict[category.name] = (
-            Transaction.objects.filter(category=category)
-            .filter(date__year=year)
-            .filter(date__month=month)
-            .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
-
-        )
-    # drop null values or zero values
-    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
-
-    return JsonResponse(
-        {
-            "title": f"Transactions per Category - {month}/{year}",
-            "data": {
-                "labels": list(category_dict.keys()),
-                "datasets": [
-                    {
-                        "label": "Amount ($)",
-                        "backgroundColor": generate_color_palette(len(category_dict)),
-                        "borderColor": generate_color_palette(len(category_dict)),
-                        "data": list(category_dict.values()),
-                    }
-                ],
-            },
-        }
-    )
 
 @staff_member_required
 def get_transaction_chart_by_tag(request, year):

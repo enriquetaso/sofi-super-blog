@@ -10,9 +10,9 @@ def admin_statistics_view(request):
 
 
 class FinanceAdminSite(admin.AdminSite):
-    site_header = "enriquetaso.com"
-    site_title = "YellowDuck.be"
-    index_title = "YellowDuck.be"
+    site_header = "Admin Panel enriquetaso.com"
+    site_title = "enriquetaso.com"
+    index_title = "enriquetaso.com"
 
     def get_app_list(self, request):
         app_list = super().get_app_list(request)
