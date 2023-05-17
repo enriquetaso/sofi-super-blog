@@ -1,11 +1,10 @@
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
-
-import environ
 import mimetypes
 import os
 from pathlib import Path
+
+import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 

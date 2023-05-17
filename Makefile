@@ -13,7 +13,7 @@ clean:
 	docker compose down
 
 remove:
-	docker compose down -v 
+	docker compose down -v
 
 migrate:
 	docker compose run --rm web python manage.py migrate

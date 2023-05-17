@@ -1,9 +1,13 @@
 import csv
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+from django.core.management.base import CommandError
 from django.utils import timezone
 
-from finance.models import Transaction, Account, Tag, Category
+from finance.models import Account
+from finance.models import Category
+from finance.models import Tag
+from finance.models import Transaction
 
 
 class Command(BaseCommand):

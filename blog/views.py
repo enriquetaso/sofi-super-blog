@@ -1,13 +1,16 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.utils import timezone
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
 
 from .forms import PostForm
-from .models import Post, Tag
+from .models import Post
+from .models import Tag
 
 
 class PostListView(generic.ListView):

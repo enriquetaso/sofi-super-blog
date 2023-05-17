@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
-from rest_framework.test import RequestsClient, APILiveServerTestCase
+from rest_framework.test import APILiveServerTestCase
+from rest_framework.test import RequestsClient
+
 from finance import models
 
 

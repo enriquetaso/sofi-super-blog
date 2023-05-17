@@ -1,13 +1,12 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
+
+from .views import AccountViewSet
+from .views import CategoryViewSet
+from .views import TagViewSet
+from .views import TransactionsCVSExportView
+from .views import TransactionViewSet
 from finance import views
-from .views import (
-    TransactionViewSet,
-    AccountViewSet,
-    TagViewSet,
-    CategoryViewSet,
-    TransactionsCVSExportView,
-)
 
 
 router = DefaultRouter()

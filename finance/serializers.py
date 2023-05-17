@@ -8,9 +8,12 @@
 # validating the incoming data.
 #
 # https://www.django-rest-framework.org/api-guide/serializers/
-
 from rest_framework import serializers
-from finance.models import Transaction, Account, Tag, Category
+
+from finance.models import Account
+from finance.models import Category
+from finance.models import Tag
+from finance.models import Transaction
 
 
 class TagSerializer(serializers.ModelSerializer):

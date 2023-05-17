@@ -1,7 +1,7 @@
+from ckeditor.fields import RichTextField
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from ckeditor.fields import RichTextField
 
 
 class Tag(models.Model):
