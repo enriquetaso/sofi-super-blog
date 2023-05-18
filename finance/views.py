@@ -12,6 +12,7 @@ from django.db.models.functions import Coalesce
 from django.db.models.functions import ExtractMonth
 from django.db.models.functions import ExtractYear
 from django.http import HttpResponse
+from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View

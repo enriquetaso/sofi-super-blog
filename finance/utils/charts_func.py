@@ -2,12 +2,14 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 
-from finance import models
+from finance.models import Category
+from finance.models import Transaction
+from finance.utils.charts import generate_color_palette
 
 
 def get_data_category_per_month(request):
 
-    categories = models.Category.objects.all()
+    categories = Category.objects.all()
     category_dict = dict()
     for category in categories:
         category_dict[category.name] = (
