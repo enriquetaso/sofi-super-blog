@@ -51,5 +51,29 @@ urlpatterns = [
         views.get_transaction_chart_by_account,
         name="chart-transaction-accounts",
     ),
+    path(
+        "chart/get-average-spent-category-monthly/<int:year>/",
+        views.get_average_spent_category_monthly,
+        name="chart-average-spent-category-monthly",
+    ),
+    path(
+        "chart/get-average-spent-big-category-monthly/<int:year>/",
+        views.get_average_spent_big_category_monthly,
+        name="chart-average-spent-big-category-monthly",
+    ),
+    path(
+        "chart/get-rule-from-income/<int:income>/",
+        views.calculate_rule_503020,
+        name="chart-get-rule-from-income",
+    ),
+    path("chart/get-financial-goals/",
+         views.get_financial_goals_chart,
+         name="chart-get-financial-goals"
+    ),
+    path("chart/get-big-category-montly/<int:month>/",
+         views.get_big_category_monthly,
+         name="chart-get-big-category-montly"
+    ),
+
 ]
 urlpatterns += router.urls
