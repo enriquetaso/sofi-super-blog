@@ -231,6 +231,12 @@ def get_transaction_chart_by_category(request, year):
             .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
         )
 
+    # drop null values or zero values
+    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
+
+    # sort dict by value
+    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+
     return JsonResponse(
         {
             "title": f"Total spent by category {year}",
