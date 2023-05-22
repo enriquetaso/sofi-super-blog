@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from rest_framework import viewsets
 
-from finance.models import Transaction, Account, Tag, Category
+from finance.models import Transaction, Account, Tag, Category, FinancialGoals
 from finance.serializers import (
     TransactionSerializer,
     AccountSerializer,
@@ -121,7 +121,7 @@ def get_transaction_chart(request, year):
 
     return JsonResponse(
         {
-            "title": f"Transactions in {year}",
+            "title": f"Total spent in {year}",
             "data": {
                 "labels": list(sales_dict.keys()),
                 "datasets": [
@@ -264,6 +264,9 @@ def get_transaction_chart_by_category_per_month(request, month):
     # drop null values or zero values
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
+    # sort dict by value
+    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+
     return JsonResponse(
         {
             "title": f"Transactions per Category - {month}/{year}",
@@ -335,5 +338,211 @@ def get_transaction_chart_by_account(request, year):
                     }
                 ],
             },
+        }
+    )
+
+@staff_member_required
+def get_average_spent_category_monthly(request, year=2023):
+    """Get average spent by category monthly"""
+    # get the number of the current month
+    current_month = date.today().month
+    categories = Category.objects.all()
+    category_dict = dict()
+    for category in categories:
+        total_per_year = Transaction.objects.filter(category=category).filter(date__year=year).aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+        category_dict[category.name] = total_per_year / current_month if total_per_year else 0
+
+    # drop null values or zero values
+    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
+
+    # sort dict by value
+    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+
+    return JsonResponse(
+        {
+            "title": f"Average spent by category in {year}",
+            "data": {
+                "labels": list(category_dict.keys()),
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(len(category_dict)),
+                        "borderColor": generate_color_palette(len(category_dict)),
+                        "data": list(category_dict.values()),
+                    }
+                ],
+            },
+        }
+    )
+
+@staff_member_required
+def get_average_spent_big_category_monthly(request, year=2023):
+    """Get average spent by category monthly"""
+    # get the number of the current month
+    needs = ["bills", "mobile", "bank fee", "transportation", "phone", "commuting", "rent", "grocery", "health", "insurance", "education", "utilities"]
+    wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
+    savings = ["savings", "investments", "debts"]
+
+    current_month = date.today().month
+
+    categories = Category.objects.all()
+    category_dict = dict()
+    for category in categories:
+        total_per_year = Transaction.objects.filter(category=category).filter(date__year=year).aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+        category_dict[category.name] = total_per_year / current_month if total_per_year else 0
+
+    # drop null values or zero values
+    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
+
+    # sort dict by value
+    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+
+    # get the total spent in needs, wants and savings
+    needs_total = 0
+    wants_total = 0
+    savings_total = 0
+    for category in category_dict:
+        if category in needs:
+            needs_total += category_dict[category]
+        elif category in savings:
+            savings_total += category_dict[category]
+        else:
+            wants_total += category_dict[category]
+
+    return JsonResponse(
+        {
+            "title": f" Average spent in year {year} - Total spent: €{total_per_year}",
+            "data": {
+                "labels": ["Needs", "Wants", "Savings"],
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(3),
+                        "borderColor": generate_color_palette(4),
+                        "data": [needs_total, wants_total, savings_total],
+                    }
+                ],
+            },
+        }
+    )
+
+@staff_member_required
+def get_big_category_monthly(request, month):
+    """Get average spent by category monthly"""
+    # get the number of the current month
+    year = 2023
+    needs = ["bills", "mobile", "bank fee", "transportation", "phone", "commuting", "rent", "grocery", "health", "insurance", "education", "utilities"]
+    wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
+    savings = ["savings", "investments", "debts"]
+
+    categories = Category.objects.all()
+    category_dict = dict()
+    for category in categories:
+        category_dict[category.name] = (
+            Transaction.objects.filter(category=category)
+            .filter(date__year=year)
+            .filter(date__month=month)
+            .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+
+        )
+
+    # drop null values or zero values
+    category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
+
+    # sort dict by value
+    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+
+    # get the total spent in needs, wants and savings
+    needs_total = 0
+    wants_total = 0
+    savings_total = 0
+    for category in category_dict:
+        if category in needs:
+            needs_total += category_dict[category]
+        elif category in savings:
+            savings_total += category_dict[category]
+        else:
+            wants_total += category_dict[category]
+
+    return JsonResponse(
+        {
+            "title": f"Spent in {month} / {year} - Total spent: €{sum(category_dict.values())}",
+            "data": {
+                "labels": ["Needs", "Wants", "Savings"],
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(3),
+                        "borderColor": generate_color_palette(4),
+                        "data": [needs_total, wants_total, savings_total],
+                    }
+                ],
+            },
+        }
+    )
+
+@staff_member_required
+def calculate_rule_503020(request, income=3200):
+    """Calculate the 50/30/20 rule"""
+
+    needs = income * 0.5
+    wants = income * 0.3
+    savings = income * 0.2
+
+    return JsonResponse(
+        {
+            "title": f"Rule 50/30/20 for an income of: €{income}",
+            "data": {
+                "labels": ["Needs", "Wants", "Savings"],
+                "datasets": [
+                    {
+                        "label": "Amount ($)",
+                        "backgroundColor": generate_color_palette(5),
+                        "borderColor": generate_color_palette(6),
+                        "data": [needs, wants, savings],
+                    }
+                ],
+            },
+        }
+    )
+
+staff_member_required
+def get_financial_goals_chart(request):
+    goals = FinancialGoals.objects.all()
+    labels = []
+    goal_amounts = []
+    current_amounts = []
+
+    for goal in goals:
+        labels.append(goal.name)
+        goal_amounts.append(float(goal.goal_amount))
+        current_amounts.append(float(goal.current_amount))
+
+    return JsonResponse(
+        {
+            "title": "Financial Goals",
+            "data": {
+                "labels": labels,
+                "datasets": [
+                    {
+                        "label": "Goal Amount ($)",
+                        "backgroundColor": "#e5e5e5",
+                        "data": goal_amounts,
+                    },
+                    {
+                        "label": "Current Amount ($)",
+                        "backgroundColor":"#ffc8dd",
+                        "data": current_amounts,
+                    }
+                ],
+            },
+            "options": {
+                "scales": {
+                    "xAxes": [{ "stacked": False }],
+                    "yAxes": [{ "stacked": False }],
+                },
+                "responsive": True,
+                "maintainAspectRatio": False
+            }
         }
     )
