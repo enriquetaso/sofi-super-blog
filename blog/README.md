@@ -44,6 +44,43 @@ $ docker-compose run --rm web python manage.py test
 sudo apt install postgresql-client-common
 ```
 
+## Import CSV
+```
+docker compose run --rm web python manage.py importcsv csv/Dec_22.csv
+```
+
+## Remove duplicate categories from the database
+```
+from django.db.models import Count, Value
+from django.db.models.functions import Trim
+from your_app.models import Category  # replace "your_app" with the name of your application
+
+# Group Category objects by trimmed 'name' field and count each group
+duplicates = (
+    Category.objects
+    .annotate(trimmed_name=Trim('name'))
+    .values('trimmed_name')
+    .annotate(name_count=Count('trimmed_name'))
+    .filter(name_count__gt=1)
+)
+
+for duplicate in duplicates:
+    print(f"Category name: '{duplicate['trimmed_name']}' has {duplicate['name_count']} duplicates.")
+
+
+# Get the category with PK 5
+new_category = Category.objects.get(pk=5)
+
+# Query all transactions with category PK 18
+transactions_to_change = Transaction.objects.filter(category__pk=18)
+
+# Update the category to PK 5 for all these transactions
+transactions_to_change.update(category=new_category)
+
+# duplicate_category.delete()
+```
+
+
 ## Backups
 Using cron to backup the db [At 00:00 on Sunday.](https://crontab.guru/once-a-week)
 ```
