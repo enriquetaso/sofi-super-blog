@@ -13,6 +13,8 @@ services:
       - .env
     ports:
       - 5432:5432
+    networks:
+      - shared_network # `web` should be add to ALLOWED_HOST
   web:
     build: .
     command: gunicorn mysite.wsgi:application --bind 0.0.0.0:8000 --log-level=error
@@ -24,8 +26,16 @@ services:
       - .env
     depends_on:
       - db
+    networks:
+      - shared_network # `web` should be add to ALLOWED_HOST
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    networks:
+      - shared_network
+
+networks:
+  shared_network:
+    external: true  # This network must be created manually before running docker-compose up
