@@ -71,3 +71,41 @@ class FinancialGoals(models.Model):
     # Meta class to order the queryset
     class Meta:
         ordering = ["-start_date"]
+
+class Income(models.Model):
+    name = models.CharField(max_length=200)
+    date = models.DateField()
+    description = models.CharField(max_length=200, blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    currency = models.ForeignKey(
+        Currency, on_delete=models.CASCADE, blank=True, null=True
+    )
+
+    def __str__(self):
+        return f"{self.date} - {self.description}"
+
+    # Meta class to order the queryset
+    class Meta:
+        ordering = ["-date"]
+
+    # on save, update the account balance
+    def save(self, *args, **kwargs):
+        """Update the account balance"""
+        self.account.balance += self.amount
+        self.account.save()
+        super(Income, self).save(*args, **kwargs)
+
+    # on delete, update the account balance
+    def delete(self, *args, **kwargs):
+        """Update the account balance"""
+        self.account.balance -= self.amount
+        self.account.save()
+        super(Income, self).delete(*args, **kwargs)
+
+    # on update, update the account balance
+    def update(self, *args, **kwargs):
+        """Update the account balance"""
+        self.account.balance -= self.amount
+        self.account.save()
+        super(Income, self).update(*args, **kwargs)
