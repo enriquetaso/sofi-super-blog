@@ -39,3 +39,4 @@ services:
 networks:
   shared_network:
     external: true  # This network must be created manually before running docker-compose up
+    # docker network create shared_network

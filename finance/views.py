@@ -112,6 +112,8 @@ def get_transaction_chart(request, year):
         .annotate(total=Coalesce(Sum("amount"), Decimal(0)))
         .values("month", "total")
         .order_by("month")
+        # remove the savings category from the total
+        .exclude(category__name="savings")
     )
 
     sales_dict = get_year_dict()
