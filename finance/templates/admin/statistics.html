@@ -25,7 +25,7 @@
   <input type="submit" value="Load" name="_load">
 </form>
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
 
     // Get the current month (zero-indexed)
     const currentMonth = new Date().getMonth();
@@ -80,7 +80,7 @@
         chart.options.title.display = true;
         chart.data.labels = labels;
         datasets.forEach(dataset => {
-            chart.data.datasets.push(dataset);
+          chart.data.datasets.push(dataset);
         });
         chart.update();
       },
@@ -94,7 +94,7 @@
 
     loadChart(getTotalTagsPerYear, `/finance/chart/transaction-by-tags/${year}/`);
     loadChart(getTotalUsageAccountPerYear, `/finance/chart/transaction-by-accounts/${year}/`);
-    loadChart(getCategoryPerMonth, `/finance/chart/transaction-by-categories-per-month/${month}/`);
+    loadChart(getCategoryPerMonth, `/finance/chart/transaction-by-categories-per-month/${year}/${month}/`);
     loadChart(getAvgCategoriesPerYear, `/finance/chart/get-average-spent-category-monthly/${year}/`);
     loadChart(getRuleCategoriesPerYear, `/finance/chart/get-average-spent-big-category-monthly/${year}/`);
     loadChart(getRule, `/finance/chart/get-rule-from-income/${income}/`);
@@ -161,7 +161,7 @@
     </div>
     <div class="col-12">
       <canvas id="getTransactionsPerYear"></canvas>
-    </div>  
+    </div>
     <div class="col-12">
       <canvas id="getTotalCategoriesPerYear"></canvas>
     </div>

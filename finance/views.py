@@ -237,7 +237,9 @@ def get_transaction_chart_by_category(request, year):
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
     # sort dict by value
-    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+    category_dict = dict(
+        sorted(category_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     return JsonResponse(
         {
@@ -256,9 +258,9 @@ def get_transaction_chart_by_category(request, year):
         }
     )
 
+
 @staff_member_required
-def get_transaction_chart_by_category_per_month(request, month):
-    year = 2023
+def get_transaction_chart_by_category_per_month(request, year, month):
     categories = Category.objects.all()
     category_dict = dict()
     for category in categories:
@@ -267,13 +269,14 @@ def get_transaction_chart_by_category_per_month(request, month):
             .filter(date__year=year)
             .filter(date__month=month)
             .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
-
         )
     # drop null values or zero values
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
     # sort dict by value
-    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+    category_dict = dict(
+        sorted(category_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     return JsonResponse(
         {
@@ -291,6 +294,7 @@ def get_transaction_chart_by_category_per_month(request, month):
             },
         }
     )
+
 
 @staff_member_required
 def get_transaction_chart_by_tag(request, year):
@@ -349,6 +353,7 @@ def get_transaction_chart_by_account(request, year):
         }
     )
 
+
 @staff_member_required
 def get_average_spent_category_monthly(request, year=2023):
     """Get average spent by category monthly"""
@@ -357,14 +362,22 @@ def get_average_spent_category_monthly(request, year=2023):
     categories = Category.objects.all()
     category_dict = dict()
     for category in categories:
-        total_per_year = Transaction.objects.filter(category=category).filter(date__year=year).aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
-        category_dict[category.name] = total_per_year / current_month if total_per_year else 0
+        total_per_year = (
+            Transaction.objects.filter(category=category)
+            .filter(date__year=year)
+            .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+        )
+        category_dict[category.name] = (
+            total_per_year / current_month if total_per_year else 0
+        )
 
     # drop null values or zero values
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
     # sort dict by value
-    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+    category_dict = dict(
+        sorted(category_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     return JsonResponse(
         {
@@ -383,11 +396,25 @@ def get_average_spent_category_monthly(request, year=2023):
         }
     )
 
+
 @staff_member_required
 def get_average_spent_big_category_monthly(request, year=2023):
     """Get average spent by category monthly"""
     # get the number of the current month
-    needs = ["bills", "mobile", "bank fee", "transportation", "phone", "commuting", "rent", "grocery", "health", "insurance", "education", "utilities"]
+    needs = [
+        "bills",
+        "mobile",
+        "bank fee",
+        "transportation",
+        "phone",
+        "commuting",
+        "rent",
+        "grocery",
+        "health",
+        "insurance",
+        "education",
+        "utilities",
+    ]
     wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
     savings = ["savings", "investments", "debts"]
 
@@ -396,14 +423,22 @@ def get_average_spent_big_category_monthly(request, year=2023):
     categories = Category.objects.all()
     category_dict = dict()
     for category in categories:
-        total_per_year = Transaction.objects.filter(category=category).filter(date__year=year).aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
-        category_dict[category.name] = total_per_year / current_month if total_per_year else 0
+        total_per_year = (
+            Transaction.objects.filter(category=category)
+            .filter(date__year=year)
+            .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
+        )
+        category_dict[category.name] = (
+            total_per_year / current_month if total_per_year else 0
+        )
 
     # drop null values or zero values
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
     # sort dict by value
-    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+    category_dict = dict(
+        sorted(category_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     # get the total spent in needs, wants and savings
     needs_total = 0
@@ -434,12 +469,26 @@ def get_average_spent_big_category_monthly(request, year=2023):
         }
     )
 
+
 @staff_member_required
 def get_big_category_monthly(request, month):
     """Get average spent by category monthly"""
     # get the number of the current month
     year = 2023
-    needs = ["bills", "mobile", "bank fee", "transportation", "phone", "commuting", "rent", "grocery", "health", "insurance", "education", "utilities"]
+    needs = [
+        "bills",
+        "mobile",
+        "bank fee",
+        "transportation",
+        "phone",
+        "commuting",
+        "rent",
+        "grocery",
+        "health",
+        "insurance",
+        "education",
+        "utilities",
+    ]
     wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
     savings = ["savings", "investments", "debts"]
 
@@ -451,14 +500,15 @@ def get_big_category_monthly(request, month):
             .filter(date__year=year)
             .filter(date__month=month)
             .aggregate(total=Coalesce(Sum("amount"), Decimal(0)))["total"]
-
         )
 
     # drop null values or zero values
     category_dict = {k: v for k, v in category_dict.items() if v is not None and v != 0}
 
     # sort dict by value
-    category_dict = dict(sorted(category_dict.items(), key=lambda item: item[1], reverse=True))
+    category_dict = dict(
+        sorted(category_dict.items(), key=lambda item: item[1], reverse=True)
+    )
 
     # get the total spent in needs, wants and savings
     needs_total = 0
@@ -489,6 +539,7 @@ def get_big_category_monthly(request, month):
         }
     )
 
+
 @staff_member_required
 def calculate_rule_503020(request, income=3200):
     """Calculate the 50/30/20 rule"""
@@ -514,7 +565,10 @@ def calculate_rule_503020(request, income=3200):
         }
     )
 
+
 staff_member_required
+
+
 def get_financial_goals_chart(request):
     goals = FinancialGoals.objects.all()
     labels = []
@@ -539,18 +593,18 @@ def get_financial_goals_chart(request):
                     },
                     {
                         "label": "Current Amount ($)",
-                        "backgroundColor":"#ffc8dd",
+                        "backgroundColor": "#ffc8dd",
                         "data": current_amounts,
-                    }
+                    },
                 ],
             },
             "options": {
                 "scales": {
-                    "xAxes": [{ "stacked": False }],
-                    "yAxes": [{ "stacked": False }],
+                    "xAxes": [{"stacked": False}],
+                    "yAxes": [{"stacked": False}],
                 },
                 "responsive": True,
-                "maintainAspectRatio": False
-            }
+                "maintainAspectRatio": False,
+            },
         }
     )

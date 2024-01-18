@@ -32,7 +32,7 @@ urlpatterns = [
         name="chart-transactions",
     ),
     path(
-        "chart/transaction-by-categories-per-month/<int:month>/",
+        "chart/transaction-by-categories-per-month/<int:year>/<int:month>/",
         views.get_transaction_chart_by_category_per_month,
         name="chart-transaction-by-categories-per-month",
     ),
@@ -66,14 +66,15 @@ urlpatterns = [
         views.calculate_rule_503020,
         name="chart-get-rule-from-income",
     ),
-    path("chart/get-financial-goals/",
-         views.get_financial_goals_chart,
-         name="chart-get-financial-goals"
+    path(
+        "chart/get-financial-goals/",
+        views.get_financial_goals_chart,
+        name="chart-get-financial-goals",
     ),
-    path("chart/get-big-category-montly/<int:month>/",
-         views.get_big_category_monthly,
-         name="chart-get-big-category-montly"
+    path(
+        "chart/get-big-category-montly/<int:month>/",
+        views.get_big_category_monthly,
+        name="chart-get-big-category-montly",
     ),
-
 ]
 urlpatterns += router.urls
