@@ -105,15 +105,19 @@ def get_filter_options(request):
 
 @staff_member_required
 def get_transaction_chart(request, year):
-    transactions = Transaction.objects.filter(date__year=year)
+    transactions = (
+        Transaction.objects.filter(date__year=year)
+        .exclude(category__name="income")
+        .exclude(category__name="savings")
+        .exclude(category__name="investments")
+        .exclude(category__name="debts")
+    )
     group_by_month = (
         transactions.annotate(month=ExtractMonth("date"))
         .values("month")
         .annotate(total=Coalesce(Sum("amount"), Decimal(0)))
         .values("month", "total")
         .order_by("month")
-        # remove the savings category from the total
-        .exclude(category__name="savings, investments, debts, income")
     )
 
     sales_dict = get_year_dict()
@@ -261,7 +265,7 @@ def get_transaction_chart_by_category(request, year):
 
 @staff_member_required
 def get_transaction_chart_by_category_per_month(request, year, month):
-    categories = Category.objects.all()
+    categories = Category.objects.all().exclude(name="income")
     category_dict = dict()
     for category in categories:
         category_dict[category.name] = (
@@ -489,7 +493,7 @@ def get_big_category_monthly(request, year, month):
     ]
     savings = ["savings", "investments", "debts"]
 
-    categories = Category.objects.all()
+    categories = Category.objects.all().exclude(name="income")
     category_dict = dict()
     for category in categories:
         category_dict[category.name] = (
