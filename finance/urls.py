@@ -72,7 +72,7 @@ urlpatterns = [
         name="chart-get-financial-goals",
     ),
     path(
-        "chart/get-big-category-montly/<int:month>/",
+        "chart/get-big-category-montly/<int:year>/<int:month>/",
         views.get_big_category_monthly,
         name="chart-get-big-category-montly",
     ),

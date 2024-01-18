@@ -99,11 +99,48 @@
     loadChart(getRuleCategoriesPerYear, `/finance/chart/get-average-spent-big-category-monthly/${year}/`);
     loadChart(getRule, `/finance/chart/get-rule-from-income/${income}/`);
     loadChart(getGoals, `/finance/chart/get-financial-goals/`);
-    loadChart(getRuleMonthly, `/finance/chart/get-big-category-montly/${month}/`);
+    loadChart(getRuleMonthly, `/finance/chart/get-big-category-montly/${year}/${month}/`);
   }
 </script>
 
 <div class="container">
+
+  <!-- Page Montly spending -->
+  <div class="row">
+    <div class="col-12">
+      <h1 style="margin-top: 50px; border-top: 3px dotted #bbb;">&nbsp;Monthly Spending by Categories&nbsp;</h1>
+    </div>
+    <div class="col-12">
+      <canvas id="getCategoryPerMonth"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2>&nbsp;Needs/wants/savings&debts&nbsp;</h2>
+    </div>
+    <div class="col-12">
+      <canvas id="getRuleMonthly"></canvas>
+      <p><small>needs = [
+          "bills",
+          "mobile",
+          "bank fee",
+          "transportation",
+          "phone",
+          "commuting",
+          "rent",
+          "grocery",
+          "health",
+          "insurance",
+          "education",
+          "utilities",
+          ]
+        </small>
+      </p>
+      <p><small>savings = ["savings", "investments", "debts"]</small></p>
+    </div>
+  </div>
+  <!-- Page Montly spending -->
 
   <div class="row">
     <div class="col-12">
@@ -137,23 +174,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <h1 style="margin-top: 50px; border-top: 3px dotted #bbb;">&nbsp;Categories spent per month&nbsp;</h1>
-    </div>
-    <div class="col-12">
-      <canvas id="getCategoryPerMonth"></canvas>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <h1 style="margin-top: 50px; border-top: 3px dotted #bbb;">&nbsp;Categories spent per month&nbsp;</h1>
-    </div>
-    <div class="col-12">
-      <canvas id="getRuleMonthly"></canvas>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-12">
@@ -171,10 +191,10 @@
     <div class="col-12">
       <h1 style="margin-top: 50px; border-top: 3px dotted #bbb;">Total Spent By Tags</h1>
     </div>
-    <div class="col-6">
+    <div class="col-12">
       <canvas id="getTotalTagsPerYear"></canvas>
     </div>
-    <div class="col-6">
+    <div class="col-12">
       <canvas id="getTotalUsageAccountPerYear"></canvas>
     </div>
   </div>
@@ -229,6 +249,14 @@
     type: "bar",
     options: {
       responsive: true,
+    },
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true
+      }
     }
   });
   let spendPerCustomerCtx = document.getElementById("getTotalCategoriesPerYear").getContext("2d");
@@ -240,17 +268,9 @@
   });
   let paymentSuccessCtx = document.getElementById("getTotalTagsPerYear").getContext("2d");
   let getTotalTagsPerYear = new Chart(paymentSuccessCtx, {
-    type: "pie",
+    type: "bar",
     options: {
       responsive: true,
-      layout: {
-        padding: {
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 25
-        }
-      }
     }
   });
   let paymentMethodCtx = document.getElementById("getTotalUsageAccountPerYear").getContext("2d");
@@ -269,4 +289,8 @@
     }
   });
 </script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

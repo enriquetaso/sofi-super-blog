@@ -113,7 +113,7 @@ def get_transaction_chart(request, year):
         .values("month", "total")
         .order_by("month")
         # remove the savings category from the total
-        .exclude(category__name="savings")
+        .exclude(category__name="savings, investments, debts, income")
     )
 
     sales_dict = get_year_dict()
@@ -128,7 +128,7 @@ def get_transaction_chart(request, year):
                 "labels": list(sales_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": colorPrimary,
                         "borderColor": colorPrimary,
                         "data": list(sales_dict.values()),
@@ -155,7 +155,7 @@ def get_account_chart(request, year):
                 "labels": list(account_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(account_dict)),
                         "borderColor": generate_color_palette(len(account_dict)),
                         "data": list(account_dict.values()),
@@ -182,7 +182,7 @@ def get_tag_chart(request, year):
                 "labels": list(tag_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(tag_dict)),
                         "borderColor": generate_color_palette(len(tag_dict)),
                         "data": list(tag_dict.values()),
@@ -211,7 +211,7 @@ def get_category_chart(request, year):
                 "labels": list(category_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(category_dict)),
                         "borderColor": generate_color_palette(len(category_dict)),
                         "data": list(category_dict.values()),
@@ -248,7 +248,7 @@ def get_transaction_chart_by_category(request, year):
                 "labels": list(category_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(category_dict)),
                         "borderColor": generate_color_palette(len(category_dict)),
                         "data": list(category_dict.values()),
@@ -285,7 +285,7 @@ def get_transaction_chart_by_category_per_month(request, year, month):
                 "labels": list(category_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(category_dict)),
                         "borderColor": generate_color_palette(len(category_dict)),
                         "data": list(category_dict.values()),
@@ -314,7 +314,7 @@ def get_transaction_chart_by_tag(request, year):
                 "labels": list(tag_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(tag_dict)),
                         "borderColor": generate_color_palette(len(tag_dict)),
                         "data": list(tag_dict.values()),
@@ -343,7 +343,7 @@ def get_transaction_chart_by_account(request, year):
                 "labels": list(account_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(account_dict)),
                         "borderColor": generate_color_palette(len(account_dict)),
                         "data": list(account_dict.values()),
@@ -386,7 +386,7 @@ def get_average_spent_category_monthly(request, year=2023):
                 "labels": list(category_dict.keys()),
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(len(category_dict)),
                         "borderColor": generate_color_palette(len(category_dict)),
                         "data": list(category_dict.values()),
@@ -415,12 +415,11 @@ def get_average_spent_big_category_monthly(request, year=2023):
         "education",
         "utilities",
     ]
-    wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
     savings = ["savings", "investments", "debts"]
-
+    total = 0
     current_month = date.today().month
 
-    categories = Category.objects.all()
+    categories = Category.objects.all().exclude(name="income")
     category_dict = dict()
     for category in categories:
         total_per_year = (
@@ -451,15 +450,15 @@ def get_average_spent_big_category_monthly(request, year=2023):
             savings_total += category_dict[category]
         else:
             wants_total += category_dict[category]
-
+    total = needs_total + wants_total + savings_total
     return JsonResponse(
         {
-            "title": f" Average spent in year {year} - Total spent: €{total_per_year}",
+            "title": f" Average spent in year {year} - Total spent: €{total}",
             "data": {
                 "labels": ["Needs", "Wants", "Savings"],
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(3),
                         "borderColor": generate_color_palette(4),
                         "data": [needs_total, wants_total, savings_total],
@@ -471,10 +470,9 @@ def get_average_spent_big_category_monthly(request, year=2023):
 
 
 @staff_member_required
-def get_big_category_monthly(request, month):
+def get_big_category_monthly(request, year, month):
     """Get average spent by category monthly"""
     # get the number of the current month
-    year = 2023
     needs = [
         "bills",
         "mobile",
@@ -489,7 +487,6 @@ def get_big_category_monthly(request, month):
         "education",
         "utilities",
     ]
-    wants = ["entertainment", "clothing", "eating Out", "gifts", "travel"]
     savings = ["savings", "investments", "debts"]
 
     categories = Category.objects.all()
@@ -529,7 +526,7 @@ def get_big_category_monthly(request, month):
                 "labels": ["Needs", "Wants", "Savings"],
                 "datasets": [
                     {
-                        "label": "Amount ($)",
+                        "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(3),
                         "borderColor": generate_color_palette(4),
                         "data": [needs_total, wants_total, savings_total],
@@ -541,7 +538,7 @@ def get_big_category_monthly(request, month):
 
 
 @staff_member_required
-def calculate_rule_503020(request, income=3200):
+def calculate_rule_503020(request, income=4200):
     """Calculate the 50/30/20 rule"""
 
     needs = income * 0.5
@@ -566,9 +563,7 @@ def calculate_rule_503020(request, income=3200):
     )
 
 
-staff_member_required
-
-
+@staff_member_required
 def get_financial_goals_chart(request):
     goals = FinancialGoals.objects.all()
     labels = []
@@ -587,12 +582,12 @@ def get_financial_goals_chart(request):
                 "labels": labels,
                 "datasets": [
                     {
-                        "label": "Goal Amount ($)",
+                        "label": "Goal Amount (€)",
                         "backgroundColor": "#e5e5e5",
                         "data": goal_amounts,
                     },
                     {
-                        "label": "Current Amount ($)",
+                        "label": "Current Amount (€)",
                         "backgroundColor": "#ffc8dd",
                         "data": current_amounts,
                     },
