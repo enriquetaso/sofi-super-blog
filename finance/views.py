@@ -127,7 +127,7 @@ def get_transaction_chart(request, year):
 
     return JsonResponse(
         {
-            "title": f"Total spent in {year}",
+            "title": f"Total spent in {year} (excluding debts, savings or investments)",
             "data": {
                 "labels": list(sales_dict.keys()),
                 "datasets": [
@@ -407,17 +407,8 @@ def get_average_spent_big_category_monthly(request, year=2023):
     # get the number of the current month
     needs = [
         "bills",
-        "mobile",
         "bank fee",
-        "transportation",
-        "phone",
-        "commuting",
         "rent",
-        "grocery",
-        "health",
-        "insurance",
-        "education",
-        "utilities",
     ]
     savings = ["savings", "investments", "debts"]
     total = 0
@@ -454,10 +445,15 @@ def get_average_spent_big_category_monthly(request, year=2023):
             savings_total += category_dict[category]
         else:
             wants_total += category_dict[category]
-    total = needs_total + wants_total + savings_total
+    total_year = needs_total + wants_total + savings_total
+    avg_year = total_year / 12
+    avg_needs = needs_total / 12
+    avg_wants = wants_total / 12
+    avg_savings = savings_total / 12
+
     return JsonResponse(
         {
-            "title": f" Average spent in year {year} - Total spent: €{total}",
+            "title": f" Average spent in year {year} - Total spent: €{avg_year}",
             "data": {
                 "labels": ["Needs", "Wants", "Savings"],
                 "datasets": [
@@ -465,7 +461,7 @@ def get_average_spent_big_category_monthly(request, year=2023):
                         "label": "Amount (€)",
                         "backgroundColor": generate_color_palette(3),
                         "borderColor": generate_color_palette(4),
-                        "data": [needs_total, wants_total, savings_total],
+                        "data": [avg_needs, avg_wants, avg_savings],
                     }
                 ],
             },
@@ -479,17 +475,8 @@ def get_big_category_monthly(request, year, month):
     # get the number of the current month
     needs = [
         "bills",
-        "mobile",
         "bank fee",
-        "transportation",
-        "phone",
-        "commuting",
         "rent",
-        "grocery",
-        "health",
-        "insurance",
-        "education",
-        "utilities",
     ]
     savings = ["savings", "investments", "debts"]
 
@@ -527,7 +514,11 @@ def get_big_category_monthly(request, year, month):
         {
             "title": f"Spent in {month} / {year} - Total spent: €{sum(category_dict.values())}",
             "data": {
-                "labels": ["Needs", "Wants", "Savings"],
+                "labels": [
+                    "Needs (bills, bank fee, rent) € ",
+                    "Wants (food, clothes, entertainment) € ",
+                    "Savings (investments, debts, savings) €",
+                ],
                 "datasets": [
                     {
                         "label": "Amount (€)",
